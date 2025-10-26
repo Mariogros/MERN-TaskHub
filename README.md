@@ -17,7 +17,7 @@ docker-compose up -d
 
 ### Ejecución sin Docker
 
-**Requisitos:** Node.js 18+, MongoDB 7.0+, Python 3.10+
+**Dependencias recomendadas:** Node.js 18+, MongoDB 7.0+, Python 3.10+
 
 ```bash
 # Backend
@@ -70,11 +70,49 @@ curl http://localhost:5000/metrics
 - docker-compose para orquestación de servicios
 - Nginx como servidor web para React
 
-## 🎁 Bonus Implementados
+**Trade-offs (resumen):**
+- React + Vite/CRA simple en vez de Next.js (menos setup para este scope)
+- Estado local (useState) en vez de Redux (evitar complejidad)
+- urllib (stdlib) en vez de requests (cero dependencias extra)
+- docker-compose en vez de Kubernetes (proporcional al tamaño)
 
-- **Docker**: Dockerfiles + docker-compose con 3 servicios
-- **Testing**: Jest/Supertest (backend) + React Testing Library (frontend)
-- **Observabilidad**: Request IDs únicos + endpoint /metrics con estadísticas
+**Estructura (resumen):**
+```
+backend/    # API Express + Mongoose
+frontend/   # React (components, tests)
+python-script/
+	analyze_tasks.py
+docker-compose.yml
+```
+
+## Limitaciones conocidas
+
+- Sin autenticación/autorización
+- Sin paginación en listados
+- CRUD parcial (falta UPDATE)
+
+Con más tiempo:
+- Agregaría UPDATE + validación con Joi/Zod
+- React Query para caché/estado de servidor
+- CI/CD en GitHub Actions
+
+## Bonus implementados
+
+-Docker (MongoDB, API, Frontend con Nginx)
+	```bash
+	docker-compose up -d
+	docker ps
+	```
+-Testing (backend y frontend)
+	```bash
+	cd backend && npm test
+	cd ../frontend && npm test
+	```
+-Observabilidad (/metrics + request IDs)
+	```bash
+	curl http://localhost:5000/metrics
+	# Ver IDs únicos en logs de la API
+	```
 
 ---
 
